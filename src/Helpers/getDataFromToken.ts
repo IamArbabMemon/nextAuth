@@ -8,7 +8,10 @@ export const getDataFromToken = (req:NextRequest)=>{
     try {
         const token = req.cookies.get("token")?.value || "";
         
-          const decodeToken:any =  jwt.verify(token,process.env.SECRET || 'secret');
+        if(token ==="")
+       throw new Error("Please login to get the information");
+       
+        const decodeToken:any =  jwt.verify(token,process.env.SECRET || 'secret');
           
           return decodeToken.id;
 

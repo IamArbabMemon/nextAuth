@@ -44,11 +44,15 @@ try {
 
     const token = await jwt.sign(tokenPayLoad, process.env.SECRET || 'secret',{expiresIn:"1d"});
     
-    return NextResponse.json({
+    const response = NextResponse.json({
         message:"Login success",
         success:true,
         statusCode:200
-    }).cookies.set("token",token,{httpOnly:true});
+    });
+
+    response.cookies.set('token',token,{httpOnly:true});
+
+    return response;
 
 
 } catch (error) {

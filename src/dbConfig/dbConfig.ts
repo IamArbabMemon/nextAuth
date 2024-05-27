@@ -3,6 +3,12 @@ import mongoose from "mongoose";
 export async function connect(){
     try{
 
+        if (mongoose.connection.readyState >= 1) {
+            // If already connected, reuse the connection
+            return;
+          }
+        
+
         mongoose.connect(process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/firstNext');
         const connection = mongoose.connection;
 

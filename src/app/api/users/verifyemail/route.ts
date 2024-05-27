@@ -25,10 +25,14 @@ export async function POST(req:NextRequest){
         const reqbody =  await req.json();
         const {token} = reqbody;
 
+        console.log(token); 
+
         if(!token)
             return NextResponse.json({ErrorMessage:"Token is empty",success:false,statusCode:400});
 
-        const user = await userModel.findOne({verifyToken: token, verifyTokenExpiry: {$gt: Date.now()}});
+        const user = await userModel.findOne({verificationToken: token, verificationTokenExpiry: {$gt: Date.now()}});
+
+
 
         if(!user)
             return NextResponse.json({ErrorMessage:"Invalid token",success:false,statusCode:400});

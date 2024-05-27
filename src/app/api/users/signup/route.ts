@@ -27,11 +27,13 @@ export async function POST(req:NextRequest){
         password:hashedPass
        }); 
   
-       console.log(newCreatedUser);
+       
 
       const emailSenderResponse = await sendEmail({email,emailType:"VERIFY", userId:newCreatedUser._id});
 
-       const userObjectWithoutPassword= newCreatedUser.toObject();
+        console.log(await userModel.findById(newCreatedUser._id));
+        
+      const userObjectWithoutPassword= newCreatedUser.toObject();
 
        delete userObjectWithoutPassword.password;
 

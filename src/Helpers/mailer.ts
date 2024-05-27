@@ -4,22 +4,24 @@ import bcrypt from 'bcryptjs';
 
   export const sendEmail = async ({email,emailType,userId}:any)=>{
 
-      
-    
     try {
       const hashedToken = await bcrypt.hash(userId.toString(),10);
       
       if(emailType==="VERIFY"){
           await usersModel.findByIdAndUpdate(userId,{
-          verificationToken:hashedToken,
+         $set:{ verificationToken:hashedToken,
           verificationTokenExpiry:Date.now()+3600000
-        })
-       }else if(emailType==="RESET"){
+         }
+        },{new:true});
+       
+      }else if(emailType==="RESET"){
         
         await usersModel.findByIdAndUpdate(userId,{
+          $set:{
           forgotPasswordToken:hashedToken,
         forgotPasswordTokenExpiry:Date.now() + 3600000
-        })
+        }
+        },{new:true})
       }
 
       const htmlForVerifyTokenEmail = `<p>Click <a href="${process.env.DOMAIN}/verifyemail?token=${hashedToken}">here</a> to ${emailType === "VERIFY" ? "verify your email" : "reset your password"}
