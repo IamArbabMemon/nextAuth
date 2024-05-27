@@ -33,6 +33,7 @@ export async function POST(req:NextRequest){
         if(!user)
             return NextResponse.json({ErrorMessage:"Invalid token",success:false,statusCode:400});
 
+        user.isVerified=true;
         user.verificationToken=undefined;
         user.verificationTokenExpiry=undefined;
 
